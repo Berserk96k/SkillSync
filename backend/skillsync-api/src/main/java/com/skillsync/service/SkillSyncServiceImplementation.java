@@ -6,6 +6,8 @@ public class SkillSyncServiceImplementation implements SkillSyncService {
 
 	@Override
 	public User getAll() {
+		
+		
 		return null;
 	}
 
