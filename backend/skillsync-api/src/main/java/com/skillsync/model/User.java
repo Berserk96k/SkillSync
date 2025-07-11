@@ -1,46 +1,52 @@
 package com.skillsync.model;
 
+import java.sql.Timestamp;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "users")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
     private String email;
+    private String password;
+    private String role;
+    @JsonProperty("profilePicture")
+    private String profilePicture;
+    private Timestamp createdAt;
 
-    // Constructors
-    public User() {}
-
-    public User(String name, String email) {
-        this.name = name;
-        this.email = email;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
-    // Getters & Setters
-    public Long getId() {
-        return id;
-    }
+    @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
+    private List<Skill> createdSkills;
 
-    public String getName() {
-        return name;
-    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserSkill> userSkills;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Goal> goals;
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Feedback> feedbacks;
 }
